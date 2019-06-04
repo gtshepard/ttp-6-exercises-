@@ -5,39 +5,51 @@ class BaseForm extends Component {
     super(props);
 
     this.state = {
-        firstName: "Garrison"
+        firstName: "Garrison",
+        lastName: "Shepard",
+        toggle: false
     };
   }
 
+  handleClick = (event) => {
+    this.setState({toggle: true });
+  }
+
   handleChange = (event) => {
-      this.setState({firstName: event.target.value} );
+      this.setState({[event.target.name]: event.target.value});
   }
 
   handleSubmit = (event) => {
-    alert('Your Saved Text: ' + this.state.firstName);
+    this.setState({toggle: false})
     event.preventDefault();
   }
 
-
-
   render(){
-    return(
-       <div>
-          <div> First Name: </div>
-          <div> Last Name:  </div>
-          <button> Edit </button>
+    if(this.state.toggle === false) {
+            return (
+              <div>
+              <div> First Name: {this.state.firstName}</div>
+              <div> Last Name: {this.state.lastName} </div>
+              <button onClick={this.handleClick}> Edit </button>
+              </div>
+            )
+     } else {
+          return (
+              <form onSubmit={this.handleSubmit}>
+                <label>
+                  First Name:
+                  <input name="firstName" value={this.state.firstName} onChange={this.handleChange} />
+                </label>
 
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input value={this.state.firstName} onChange={this.handleChange} />
-        </label>
+                <label>
+                  Last Name:
+                <input name="lastName" value={this.state.lastName} onChange={this.handleChange} />
+                </label>
 
-        <input type="submit" value="Submit" />
-      </form>
-
-       </div>
-    )
+                <input onClick = {this.handleClick} type="submit" value="Submit" />
+              </form>
+            )
+      }
   }
 }
 export default BaseForm
