@@ -4,11 +4,15 @@ class BaseForm extends Component {
   constructor(props){
     super(props);
 
+    this.first = "";
+    this.last = "";
+
     this.state = {
         firstName: "Garrison",
         lastName: "Shepard",
         toggle: false
     };
+    this.baseState = this.state;
   }
 
   handleClick = (event) => {
@@ -17,10 +21,17 @@ class BaseForm extends Component {
 
   handleChange = (event) => {
       this.setState({[event.target.name]: event.target.value});
+    //  this.setState({[event.target.name]: event.target.value});
   }
 
   handleSubmit = (event) => {
     this.setState({toggle: false})
+    this.baseState = this.state;
+    event.preventDefault();
+  }
+
+  handleCancel = (event) => {
+    this.setState(this.baseState);
     event.preventDefault();
   }
 
@@ -35,7 +46,7 @@ class BaseForm extends Component {
             )
      } else {
           return (
-              <form onSubmit={this.handleSubmit}>
+              <form >
                 <label>
                   First Name:
                   <input name="firstName" value={this.state.firstName} onChange={this.handleChange} />
@@ -45,8 +56,8 @@ class BaseForm extends Component {
                   Last Name:
                 <input name="lastName" value={this.state.lastName} onChange={this.handleChange} />
                 </label>
-
-                <input onClick = {this.handleClick} type="submit" value="Submit" />
+                <button onClick={this.handleSubmit}>Submit</button>
+                <button onClick={this.handleCancel}>Cancel</button>
               </form>
             )
       }
